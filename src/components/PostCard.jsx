@@ -9,6 +9,7 @@ import EditPostModal from "./EditPostModal";
 import NestedReply from "./NestedReply";
 import LikesModal from "./LikesModal";
 import "../styles/PostCard.css";
+import API_URL from "../utils/api";
 
 const PostCard = ({
   post,
@@ -57,7 +58,6 @@ const PostCard = ({
   const [currentUserFromApi, setCurrentUserFromApi] = useState(null);
   const navigate = useNavigate();
 
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
   const effectiveCurrentUser = currentUserProp || currentUserFromApi;
 
   const ensureLoggedIn = (message) => {

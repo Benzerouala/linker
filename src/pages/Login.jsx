@@ -7,8 +7,7 @@ import { useNavigate, Link } from "react-router-dom";
 import Feed from "../components/Feed";
 import HomeNavbar from "../components/HomeNavbar";
 import "../styles/Login.css";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+import API_URL from "../utils/api";
 
 export default function Login() {
   const [formData, setFormData] = useState({

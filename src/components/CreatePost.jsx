@@ -22,7 +22,7 @@ const CreatePost = ({ onPostCreated }) => {
   const textareaRef = useRef(null);
   const mentionRef = useRef(null);
 
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api" || "https://backend-linker.onrender.com/api";
 
   const updateMentionState = (value, cursorPos) => {
     const textBeforeCursor = value.slice(0, cursorPos);

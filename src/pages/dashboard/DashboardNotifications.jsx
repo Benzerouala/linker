@@ -6,8 +6,7 @@ import { getImageUrl } from "../../utils/imageHelper";
 import { useToastContext } from "../../contexts/ToastContext";
 import ConfirmModal from "../../components/ConfirmModal";
 import "../../styles/Dashboard.css";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+import API_URL from "../../utils/api";
 
 export default function DashboardNotifications() {
   const { user } = useOutletContext();
