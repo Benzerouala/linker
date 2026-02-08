@@ -134,6 +134,7 @@ const CreatePost = ({ onPostCreated }) => {
       "image/jpeg",
       "image/png",
       "image/gif",
+      "image/heic",
       "image/webp",
       "video/mp4",
       "video/webm",
