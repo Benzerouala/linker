@@ -10,7 +10,8 @@ import MobileBottomNavbar from "../components/MobileBottomNavbar";
 import "../styles/Feed.css";
 import "../styles/Search.css";
 import axios from "axios";
-import API_URL from "../utils/api";
+
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 export default function Search() {
   const [searchParams] = useSearchParams();
