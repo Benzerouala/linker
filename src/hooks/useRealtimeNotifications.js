@@ -2,14 +2,13 @@
 import { useState, useEffect } from "react";
 import { useSocket } from "../contexts/SocketContext";
 import { useToastContext } from "../contexts/ToastContext";
+import API_URL from "../utils/api";
 
 export const useRealtimeNotifications = () => {
   const { socket, connected } = useSocket();
   const { success } = useToastContext();
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
-
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
   // Charger les notifications initiales
   useEffect(() => {
