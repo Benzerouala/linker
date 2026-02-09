@@ -21,7 +21,7 @@
   border-left: 1px solid var(--border-color);
   min-height: 0; /* pour que la sidebar s’adapte à la hauteur du layout */
   overflow: hidden; /* seul .right-sidebar-content défile, pas tout l'aside */
-  position: sticky;
+  position: fixed;
   top: 70px;
   display: flex;
   flex-direction: column;
