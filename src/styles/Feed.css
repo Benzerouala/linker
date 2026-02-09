@@ -1,7 +1,9 @@
 .feed {
   display: flex;
   flex-direction: column;
-   padding-top: 35px !important; 
+  padding-top: 35px !important; 
+  min-height: 100%;
+  position: relative;
 }
 
 .feed-loading,
