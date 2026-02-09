@@ -23,7 +23,14 @@ export const getImageUrl = (path, type = "avatar", username = "User") => {
 
   // Ensure path starts with /
   const cleanPath = path.startsWith("/") ? path : `/${path}`
-  return `${BACKEND_URL}${cleanPath}`
+  const fullUrl = `${BACKEND_URL}${cleanPath}`
+  
+  // Ajouter un timestamp pour éviter le cache si c'est une image d'utilisateur
+  if (type === "avatar" || type === "cover") {
+    return `${fullUrl}?t=${Date.now()}`
+  }
+  
+  return fullUrl
 }
 
 export const handleImageError = (e) => {

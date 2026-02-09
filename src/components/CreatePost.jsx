@@ -140,7 +140,7 @@ const CreatePost = ({ onPostCreated }) => {
     ];
     if (!validTypes.includes(file.type)) {
       setError(
-        "Format de fichier non supporté. Utilisez JPG, PNG, GIF, WEBP, MP4 ou WEBM",
+        "Format de fichier non supporté. Utilisez JPG, PNG, GIF, HEIC, WEBP, MP4 ou WEBM",
       );
       return;
     }

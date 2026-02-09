@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { getImageUrl } from "../../utils/imageHelper";
+import { getImageUrl, handleImageError } from "../../utils/imageHelper";
 import { useToastContext } from "../../contexts/ToastContext";
 import ConfirmModal from "../../components/ConfirmModal";
 import API_URL from "../../utils/api";
@@ -343,13 +343,7 @@ export default function DashboardNotifications() {
                 }
                 alt={notif.sender?.username}
                 className="notification-avatar"
-                onError={(e) =>
-                  (e.target.src = getImageUrl(
-                    null,
-                    "avatar",
-                    notif.sender?.username,
-                  ))
-                }
+                onError={handleImageError}
               />
 
               <div className="notification-body">
