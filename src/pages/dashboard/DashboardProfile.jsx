@@ -6,9 +6,8 @@ import { useToastContext } from "../../contexts/ToastContext";
 import PostCard from "../../components/PostCard";
 import Pagination from "../../components/Pagination";
 import { getImageUrl } from "../../utils/imageHelper";
+import API_URL from "../../utils/api";
 import "../../styles/DashboardProfile.css";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
 export default function DashboardProfile() {
   const { user, setUser } = useOutletContext();
