@@ -1,5 +1,5 @@
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://backend-app-linker.onrender.com"
 const BRAND_AVATAR_BG = "4FD04C"
 
 export const getImageUrl = (path, type = "avatar", username = "User") => {
