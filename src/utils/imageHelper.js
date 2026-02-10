@@ -3,13 +3,6 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "https://backend-app-lin
 const BRAND_AVATAR_BG = "4FD04C"
 
 export const getImageUrl = (path, type = "avatar", username = "User") => {
-  // En production, utiliser les avatars générés si le backend ne fonctionne pas
-  if (import.meta.env.PROD && type === "avatar") {
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(
-      username,
-    )}&size=200&background=${BRAND_AVATAR_BG}&color=fff&bold=true`
-  }
-
   if (!path) {
     if (type === "avatar") {
       return `https://ui-avatars.com/api/?name=${encodeURIComponent(
