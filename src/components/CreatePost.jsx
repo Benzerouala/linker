@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useToastContext } from "../contexts/ToastContext";
 import { getImageUrl } from "../utils/imageHelper";
 import "../styles/CreatePost.css";
+import API_URL from "../utils/api";
 
 const CreatePost = ({ onPostCreated }) => {
   const { success } = useToastContext();
@@ -22,7 +23,7 @@ const CreatePost = ({ onPostCreated }) => {
   const textareaRef = useRef(null);
   const mentionRef = useRef(null);
 
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api" || "https://backend-app-linker.onrender.com/api";
+
 
   const updateMentionState = (value, cursorPos) => {
     const textBeforeCursor = value.slice(0, cursorPos);
@@ -170,94 +171,94 @@ const CreatePost = ({ onPostCreated }) => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!content.trim() && !mediaFile) {
-    setError("Le contenu ou un média est requis");
-    return;
-  }
-
-  if (content.length > 500) {
-    setError("Le contenu ne peut pas dépasser 500 caractères");
-    return;
-  }
-
-  setIsSubmitting(true);
-  setError("");
-
-  try {
-    const token = localStorage.getItem("token");
-
-    const formData = new FormData();
-    formData.append("content", content);
-    if (mediaFile) {
-      formData.append("media", mediaFile);
+    if (!content.trim() && !mediaFile) {
+      setError("Le contenu ou un média est requis");
+      return;
     }
 
-    // Logs pour débogage
-    console.log("📤 Envoi du post:");
-    console.log("- content:", content);
-    console.log("- content length:", content.length);
-    console.log("- mediaFile:", mediaFile);
-    console.log("- formData entries:");
-    for (let [key, value] of formData.entries()) {
-      console.log(`  ${key}:`, value);
+    if (content.length > 500) {
+      setError("Le contenu ne peut pas dépasser 500 caractères");
+      return;
     }
 
-    const response = await fetch(`${API_URL}/threads`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
-    });
+    setIsSubmitting(true);
+    setError("");
 
-    // Log de la réponse brute
-    console.log("📥 Réponse brute:", response.status, response.statusText);
-    const responseText = await response.text();
-    console.log("📥 Réponse texte:", responseText);
-    
-    const data = JSON.parse(responseText);
+    try {
+      const token = localStorage.getItem("token");
 
-    if (data.success) {
-      setContent("");
-      removeMedia();
-      success("✓ Post publié avec succès !");
-      
-      if (onPostCreated) {
-        // Ensure post has all necessary data for display
-        const postWithUserData = {
-          ...data.data,
-          author: {
-            _id: data.data.author?._id || data.data.author,
-            username: data.data.author?.username || "Unknown",
-            name:
-              data.data.author?.name ||
-              data.data.author?.username ||
-              "Unknown",
-            profilePicture: data.data.author?.profilePicture || null,
-            isVerified: data.data.author?.isVerified || false,
-          },
-          likes: [],
-          likesCount: 0,
-          replies: [],
-          repliesCount: 0,
-          isLiked: false,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        };
-        onPostCreated(postWithUserData);
+      const formData = new FormData();
+      formData.append("content", content);
+      if (mediaFile) {
+        formData.append("media", mediaFile);
       }
-    } else {
-      setError(data.message || "Erreur lors de la création du post");
+
+      // Logs pour débogage
+      console.log("📤 Envoi du post:");
+      console.log("- content:", content);
+      console.log("- content length:", content.length);
+      console.log("- mediaFile:", mediaFile);
+      console.log("- formData entries:");
+      for (let [key, value] of formData.entries()) {
+        console.log(`  ${key}:`, value);
+      }
+
+      const response = await fetch(`${API_URL}/threads`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      // Log de la réponse brute
+      console.log("📥 Réponse brute:", response.status, response.statusText);
+      const responseText = await response.text();
+      console.log("📥 Réponse texte:", responseText);
+
+      const data = JSON.parse(responseText);
+
+      if (data.success) {
+        setContent("");
+        removeMedia();
+        success("✓ Post publié avec succès !");
+
+        if (onPostCreated) {
+          // Ensure post has all necessary data for display
+          const postWithUserData = {
+            ...data.data,
+            author: {
+              _id: data.data.author?._id || data.data.author,
+              username: data.data.author?.username || "Unknown",
+              name:
+                data.data.author?.name ||
+                data.data.author?.username ||
+                "Unknown",
+              profilePicture: data.data.author?.profilePicture || null,
+              isVerified: data.data.author?.isVerified || false,
+            },
+            likes: [],
+            likesCount: 0,
+            replies: [],
+            repliesCount: 0,
+            isLiked: false,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          };
+          onPostCreated(postWithUserData);
+        }
+      } else {
+        setError(data.message || "Erreur lors de la création du post");
+      }
+    } catch (err) {
+      setError("Erreur de connexion au serveur");
+      console.error("Erreur:", err);
+    } finally {
+      setIsSubmitting(false);
     }
-  } catch (err) {
-    setError("Erreur de connexion au serveur");
-    console.error("Erreur:", err);
-  } finally {
-    setIsSubmitting(false);
-  }
-};
+  };
 
   return (
     <div className="create-post">
@@ -320,9 +321,8 @@ const CreatePost = ({ onPostCreated }) => {
                   <button
                     key={user._id || user.id || user.username}
                     type="button"
-                    className={`mention-suggestion-item${
-                      index === activeMentionIndex ? " active" : ""
-                    }`}
+                    className={`mention-suggestion-item${index === activeMentionIndex ? " active" : ""
+                      }`}
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => handleSelectMention(user)}
                   >
