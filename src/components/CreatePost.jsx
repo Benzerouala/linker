@@ -7,6 +7,7 @@ import "../styles/CreatePost.css";
 import API_URL from "../utils/api";
 
 const CreatePost = ({ onPostCreated }) => {
+  console.log("Current API_URL in CreatePost:", API_URL);
   const { success } = useToastContext();
   const [content, setContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
