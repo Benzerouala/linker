@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getImageUrl } from "../utils/imageHelper";
+import { getImageUrl, handleImageError } from "../utils/imageHelper";
 import { useToastContext } from "../contexts/ToastContext";
 import ConfirmModal from "./ConfirmModal";
 import EditPostModal from "./EditPostModal";
@@ -253,9 +253,9 @@ const PostCard = ({
       typeof mediaSource === "string" ? mediaSource : mediaSource?.url;
     if (!path) return null;
     if (path.startsWith("http")) return path;
-    const BASE = API_URL.replace("/api", "");
-    const normalizedPath = path.startsWith("/") ? path : `/${path}`;
-    return `${BASE}${normalizedPath}`;
+    
+    // Utiliser getImageUrl pour gérer correctement les URLs en production
+    return getImageUrl(path, "media");
   };
 
   const getMediaType = () => {
@@ -1091,6 +1091,7 @@ const PostCard = ({
                   src={mediaUrl}
                   className="post-media-img"
                   alt="Post content"
+                  onError={handleImageError}
                 />
               ) : (
                 <video src={mediaUrl} controls className="post-media-video" />
@@ -1160,7 +1161,12 @@ const PostCard = ({
               />
             </div>
           ) : mediaType === "image" ? (
-            <img src={mediaUrl} className="post-media-img" alt="Post content" />
+            <img 
+              src={mediaUrl} 
+              className="post-media-img" 
+              alt="Post content" 
+              onError={handleImageError} 
+            />
           ) : (
             <video src={mediaUrl} controls className="post-media-video" />
           )}

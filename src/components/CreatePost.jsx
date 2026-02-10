@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useToastContext } from "../contexts/ToastContext";
 import { getImageUrl } from "../utils/imageHelper";
-import API_URL from "../utils/api";
 import "../styles/CreatePost.css";
 
 const CreatePost = ({ onPostCreated }) => {
@@ -22,6 +21,8 @@ const CreatePost = ({ onPostCreated }) => {
   const [mentionRange, setMentionRange] = useState(null);
   const textareaRef = useRef(null);
   const mentionRef = useRef(null);
+
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
   const updateMentionState = (value, cursorPos) => {
     const textBeforeCursor = value.slice(0, cursorPos);
@@ -133,14 +134,13 @@ const CreatePost = ({ onPostCreated }) => {
       "image/jpeg",
       "image/png",
       "image/gif",
-      "image/heic",
       "image/webp",
       "video/mp4",
       "video/webm",
     ];
     if (!validTypes.includes(file.type)) {
       setError(
-        "Format de fichier non supporté. Utilisez JPG, PNG, GIF, HEIC, WEBP, MP4 ou WEBM",
+        "Format de fichier non supporté. Utilisez JPG, PNG, GIF, WEBP, MP4 ou WEBM",
       );
       return;
     }
@@ -194,6 +194,16 @@ const CreatePost = ({ onPostCreated }) => {
       formData.append("media", mediaFile);
     }
 
+    // Logs pour débogage
+    console.log("📤 Envoi du post:");
+    console.log("- content:", content);
+    console.log("- content length:", content.length);
+    console.log("- mediaFile:", mediaFile);
+    console.log("- formData entries:");
+    for (let [key, value] of formData.entries()) {
+      console.log(`  ${key}:`, value);
+    }
+
     const response = await fetch(`${API_URL}/threads`, {
       method: "POST",
       headers: {
@@ -202,7 +212,12 @@ const CreatePost = ({ onPostCreated }) => {
       body: formData,
     });
 
-    const data = await response.json();
+    // Log de la réponse brute
+    console.log("📥 Réponse brute:", response.status, response.statusText);
+    const responseText = await response.text();
+    console.log("📥 Réponse texte:", responseText);
+    
+    const data = JSON.parse(responseText);
 
     if (data.success) {
       setContent("");
